@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Session 0 Countdown</title>
+    <!-- Google Fonts for Gothic/Fantasy Aesthetic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500;700&family=MedievalSharp&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f0c08;
+            /* Using a subtle procedural dark slate/stone color system to avoid heavy external image loads */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(30, 20, 15, 0.4), rgba(10, 5, 5, 0.9)),
+                linear-gradient(45deg, rgba(20, 15, 10, 0.3) 25%, transparent 25%, transparent 75%, rgba(20, 15, 10, 0.3) 75%),
+                linear-gradient(45deg, rgba(20, 15, 10, 0.3) 25%, transparent 25%, transparent 75%, rgba(20, 15, 10, 0.3) 75%);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            background-position: 0 0, 0 0, 20px 20px;
+            color: #e2d4b7;
+            font-family: 'Cinzel', serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(22, 16, 13, 0.85);
+            padding: 40px 60px;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.85), inset 0 0 20px rgba(139, 0, 0, 0.2);
+            border: 2px solid #8a1c14;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Decorative Fantasy Corners */
+        .container::before, .container::after {
+            content: "✦";
+            position: absolute;
+            font-size: 24px;
+            color: #d4af37;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+        }
+        .container::before { top: 10px; left: 15px; }
+        .container::after { bottom: 10px; right: 15px; }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.5rem;
+            color: #d4af37;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(139, 0, 0, 0.4);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Countdown Grid */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: rgba(10, 7, 5, 0.9);
+            border: 1px solid #5a4a3a;
+            border-top: 3px solid #8a1c14;
+            border-bottom: 3px solid #8a1c14;
+            border-radius: 6px;
+            padding: 15px;
+            min-width: 100px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .time-box:hover {
+            transform: translateY(-5px);
+            border-top-color: #d4af37;
+            border-bottom-color: #d4af37;
+        }
+
+        .number {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #e2d4b7;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #8c7a6b;
+        }
+
+        /* Ambient Pulsing Glow behind the box */
+        .ambient-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Message when countdown ends */
+        #session-message {
+            font-size: 2rem;
+            color: #d4af37;
+            font-family: 'Cinzel Decorative', serif;
+            display: none;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .number { font-size: 2.5rem; }
+            .time-box { min-width: 80px; padding: 10px; }
+            .countdown { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="container">
+        <h1 id="main-title">Session 0 begins in</h1>
+        
+        <div class="countdown" id="countdown-display">
+            <div class="time-box">
+                <div class="number" id="days">00</div>
+                <div class="label">Days</div>
+            </div>
+            <div class="time-box">
+                <div class="number" id="hours">00</div>
+                <div class="label">Hours</div>
+            </div>
+            <div class="time-box">
+                <div class="number" id="minutes">00</div>
+                <div class="label">Mins</div>
+            </div>
+            <div class="time-box">
+                <div class="number" id="seconds">00</div>
+                <div class="label">Secs</div>
+            </div>
+        </div>
+
+        <div id="session-message">Roll for Initiative! The Session Has Begun!</div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            const now = new Date();
+            
+            // Target: Today at 6:00 PM (18:00) in Sydney / AEST (Australia/Sydney)
+            // We use Intl to properly find out the time difference for Sydney regardless of user's timezone
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Australia/Sydney',
+                year: 'numeric', month: 'numeric', day: 'numeric',
+                hour: 'numeric', minute: 'numeric', second: 'numeric',
+                hour12: false
+            });
+
+            const parts = formatter.formatToParts(now);
+            const sydneyTimeMap = {};
+            parts.forEach(p => sydneyTimeMap[p.type] = p.value);
+
+            // Construct exact modern Date object for today's 6pm in Sydney
+            const targetSydney = new Date(
+                sydneyTimeMap.year,
+                sydneyTimeMap.month - 1,
+                sydneyTimeMap.day,
+                18, 0, 0, 0 // 6:00:00 PM
+            );
+
+            // Get absolute UTC timestamp for Sydney 6pm today
+            // Since JavaScript dates are made in local timezone, we calculate the exact difference
+            const formatTarget = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Australia/Sydney', hour12: false, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+            });
+            
+            // Standard conversion method to ensure target is perfectly anchored to Sydney's clock
+            const sydneyNowString = formatTarget.format(now);
+            const sydneyNowDate = new Date(sydneyNowString);
+            
+            let timeDifference = targetSydney.getTime() - sydneyNowDate.getTime();
+
+            // If 6pm has already passed today, set target to 6pm tomorrow
+            if (timeDifference < 0) {
+                targetSydney.setDate(targetSydney.getDate() + 1);
+                timeDifference = targetSydney.getTime() - sydneyNowDate.getTime();
+            }
+
+            // Calculations for days, hours, minutes and seconds
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            // Display results
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+
+            // If the countdown is hit exactly
+            if (timeDifference <= 0) {
+                document.getElementById('countdown-display').style.display = 'none';
+                document.getElementById('main-title').style.display = 'none';
+                document.getElementById('session-message').style.display = 'block';
+                clearInterval(intervalId);
+            }
+        }
+
+        // Run immediately on load and then every second
+        updateCountdown();
+        const intervalId = setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
