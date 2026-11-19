@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Invite Link Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #f9eee6; --ink: #4a3029; --gold: #a47c55; --rose: #b05f63; --line: rgba(164,124,85,.45); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 18px/1.5 "Cormorant Garamond", Georgia, serif; padding: 32px 16px 64px; }
+  main { max-width: 760px; margin: 0 auto; }
+  h1 { font: 400 52px/1.1 "Pinyon Script", cursive; color: var(--gold); text-align: center; margin: 0 0 8px; }
+  p.lead { text-align: center; font-style: italic; margin: 0 0 28px; }
+  label { display: block; font-weight: 600; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; margin: 18px 0 6px; }
+  input, textarea { width: 100%; font: 17px/1.4 inherit; font-family: inherit; color: inherit; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: #fff8; }
+  textarea { min-height: 180px; }
+  small { display: block; font-style: italic; margin-top: 4px; }
+  button { font: 600 13px/1 inherit; font-family: inherit; letter-spacing: .2em; text-transform: uppercase; padding: 12px 22px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold); color: var(--paper); cursor: pointer; }
+  button.ghost { background: transparent; color: var(--gold); padding: 8px 14px; }
+  .bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 26px; font-size: 16px; }
+  th, td { text-align: left; padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  td.url { word-break: break-all; font-size: 14px; color: #6a4c43; }
+  th { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--rose); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Invite Link Maker</h1>
+  <p class="lead">Make a personal link for each household. Each link greets the guest by name and caps their RSVP at the number of seats you give them.</p>
+
+  <label for="base">Website address</label>
+  <input id="base" type="url">
+  <small>Leave as is once the site is live. It defaults to this site's address.</small>
+
+  <label for="list">Guests: one household per line, as <em>Name, seats</em></label>
+  <textarea id="list" placeholder="Tita Marites and Tito Jun, 2&#10;The Santos Family, 4&#10;Adam Cooper, 1"></textarea>
+
+  <div class="bar">
+    <button id="make">Make links</button>
+    <button id="csv" class="ghost" hidden>Download as spreadsheet (CSV)</button>
+  </div>
+
+  <table id="out" hidden>
+    <thead><tr><th>Guest</th><th>Seats</th><th>Link</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table>
+</main>
+<script>
+  const base = document.getElementById('base');
+  base.value = location.href.replace(/links\.html.*$/, '');
+  const enc = (o) => btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  let rows = [];
+  document.getElementById('make').onclick = () => {
+    const b = base.value.trim().replace(/\/?$/, '/');
+    rows = document.getElementById('list').value.split('\n').map((l) => l.trim()).filter(Boolean).map((l) => {
+      const m = l.match(/^(.*?)(?:\s*,\s*(\d+))?$/);
+      const name = m[1].trim(), seats = Math.min(12, Math.max(1, parseInt(m[2] || '2', 10)));
+      return { name, seats, url: b + '?i=' + enc({ n: name, s: seats }) };
+    });
+    const tb = document.querySelector('#out tbody'); tb.innerHTML = '';
+    rows.forEach((r) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td></td><td></td><td class="url"></td><td><button class="ghost">Copy</button></td>';
+      tr.children[0].textContent = r.name; tr.children[1].textContent = r.seats; tr.children[2].textContent = r.url;
+      tr.querySelector('button').onclick = (e) => { navigator.clipboard.writeText(r.url); e.target.textContent = 'Copied'; };
+      tb.appendChild(tr);
+    });
+    document.getElementById('out').hidden = !rows.length;
+    document.getElementById('csv').hidden = !rows.length;
+  };
+  document.getElementById('csv').onclick = () => {
+    const q = (s) => '"' + String(s).replace(/"/g, '""') + '"';
+    const csv = 'Guest,Seats,Link\n' + rows.map((r) => [q(r.name), r.seats, q(r.url)].join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = 'invite-links.csv'; a.click();
+  };
+</script>
+</body>
+</html>
