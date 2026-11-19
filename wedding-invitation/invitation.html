@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cathy &amp; Daniel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #4a3029;
+    --ink-soft: #5c4038;
+    --gold: #a47c55;
+    --rose: #b05f63;
+  }
+  @page { size: 6in 8in; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #e9dcd5; }
+  body {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    color: var(--ink);
+    font-variant-numeric: lining-nums;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 32px; padding: 32px 0;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page {
+    position: relative;
+    width: 768px; height: 1024px;
+    background-size: 100% 100%;
+    box-shadow: 0 6px 30px rgba(80, 40, 30, .18);
+    overflow: hidden;
+  }
+  .invite  { background-image: url("inv-bg.jpg"); }
+  .entourage { background-image: url("ent-bg.jpg"); }
+  .content {
+    position: absolute;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+  }
+
+  /* shared pieces */
+  .caps { text-transform: uppercase; letter-spacing: .2em; }
+  .script { font-family: "Pinyon Script", cursive; font-weight: 400; color: var(--gold); line-height: 1; }
+  .divider {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 300px;
+  }
+  .divider::before, .divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--gold); opacity: .75;
+  }
+  .divider span {
+    width: 7px; height: 7px; background: var(--gold);
+    transform: rotate(45deg); flex: none;
+  }
+
+  /* ---------- PAGE 1 : INVITATION ---------- */
+  .invite .content { left: 70px; right: 60px; top: 150px; bottom: 112px; justify-content: space-between; }
+  .blessing { font-weight: 500; font-size: 15px; line-height: 1.75; color: var(--ink-soft); letter-spacing: .22em; }
+  .parents { font-size: 25px; font-weight: 500; line-height: 1.35; margin-top: 16px; }
+  .together { font-weight: 500; font-size: 15px; letter-spacing: .24em; color: var(--ink-soft); }
+  .name { font-size: 39px; font-weight: 500; letter-spacing: .14em; line-height: 1; padding-left: .14em; }
+  .amp {
+    position: relative; width: 560px; height: 76px; margin: 10px 0 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .amp svg { position: absolute; inset: 0; }
+  .amp .script { position: relative; font-size: 58px; padding: 0 14px; margin-top: -6px; }
+  .invite-line { font-weight: 500; font-size: 15px; letter-spacing: .22em; color: var(--ink-soft); }
+  .date { font-size: 27px; font-weight: 500; letter-spacing: .14em; line-height: 1.45; padding-left: .14em; }
+  .venue .script { font-size: 54px; }
+  .venue .caps { font-weight: 500; font-size: 14.5px; letter-spacing: .24em; line-height: 1.75; margin-top: 10px; color: var(--ink-soft); }
+  .group { display: flex; flex-direction: column; align-items: center; }
+
+  /* ---------- PAGE 2 : ENTOURAGE ---------- */
+  .entourage .content { left: 95px; right: 85px; top: 62px; bottom: 50px; justify-content: space-between; }
+  .title { font-size: 58px; margin: 6px 0 0 50px; }
+  .heading { font-size: 17px; font-weight: 600; letter-spacing: .24em; color: var(--rose); padding-left: .24em; }
+  .sub { font-size: 14px; font-weight: 600; letter-spacing: .22em; color: var(--rose); padding-left: .22em; }
+  .desc { text-wrap: balance; font-style: italic; font-size: 16.5px; color: var(--ink-soft); line-height: 1.3; margin-top: 3px; }
+  .names { font-size: 22px; font-weight: 500; line-height: 1.3; margin-top: 6px; }
+  .names.sm { font-size: 20px; margin-top: 3px; }
+  .intro { text-wrap: balance; font-style: italic; font-size: 16.5px; color: var(--ink-soft); line-height: 1.35; max-width: 500px; margin-top: 4px; }
+  .split { display: grid; grid-template-columns: 1fr 1px 1fr; width: 540px; align-items: stretch; }
+  .split .rule { background: var(--gold); opacity: .7; }
+  .split .col { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 2px 0; }
+  .rites { display: flex; flex-direction: column; align-items: center; gap: 13px; margin-top: 14px; }
+  .attire { font-size: 46px; margin-bottom: 8px; }
+
+  @media print {
+    html, body { background: none; }
+    body { padding: 0; gap: 0; display: block; }
+    .page { width: 6in; height: 8in; box-shadow: none; break-after: page; zoom: .75; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<section class="page invite">
+  <div class="content">
+
+    <div class="group">
+      <p class="blessing caps">With the grace of God<br>and the blessing of our parents</p>
+      <p class="parents">Emmanuel and Juana Arcangel<br>Rodney and Debbie Green</p>
+    </div>
+
+    <div class="divider"><span></span></div>
+
+    <p class="together caps">Together with our families</p>
+
+    <div class="group">
+      <p class="name caps">Cathy Lei Arcangel</p>
+      <div class="amp">
+        <svg viewBox="0 0 560 76" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M4 46 C 90 28, 170 28, 236 42" fill="none" stroke="#a47c55" stroke-width="1.1" stroke-linecap="round"/>
+          <path d="M324 42 C 390 28, 470 28, 556 46" fill="none" stroke="#a47c55" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+        <span class="script">and</span>
+      </div>
+      <p class="name caps">Daniel Geoff Green</p>
+    </div>
+
+    <p class="invite-line caps">Joyfully invite you to celebrate our wedding</p>
+
+    <div class="divider"><span></span></div>
+
+    <p class="date caps">Wednesday, 4 August 2027<br>4:00 pm</p>
+
+    <div class="divider"><span></span></div>
+
+    <div class="group venue">
+      <p class="script">Surf Suites</p>
+      <p class="caps">URBNSURF Sydney<br>Sydney Olympic Park</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PAGE 2 ================= -->
+<section class="page entourage">
+  <div class="content">
+
+    <p class="script title">Wedding Entourage</p>
+
+    <div class="divider"><span></span></div>
+
+    <div class="group">
+      <p class="heading caps">Principal Witnesses</p>
+      <p class="desc">to stand with us and bear witness to our exchange of vows</p>
+      <p class="names">Reggie and Ana Lou Mercado<br>Pete and Janene Rox</p>
+    </div>
+
+    <div class="divider"><span></span></div>
+
+    <div class="group">
+      <p class="desc" style="margin:0 0 12px">to stand beside us throughout our wedding ceremony</p>
+      <div class="split">
+        <div class="col"><p class="sub caps">Best Man</p><p class="names">Adam Cooper</p></div>
+        <div class="rule"></div>
+        <div class="col"><p class="sub caps">Maid of Honour</p><p class="names">Jane Zamar</p></div>
+      </div>
+    </div>
+
+    <div class="divider"><span></span></div>
+
+    <div class="group">
+      <p class="heading caps">Ceremonial Traditions</p>
+      <p class="intro">Honouring cherished Filipino wedding traditions that celebrate unity, love, commitment and the joining of two families</p>
+      <div class="rites">
+        <div class="group">
+          <p class="sub caps">The Veil</p>
+          <p class="desc">to clothe us in unity, comfort and the loving protection of our marriage</p>
+          <p class="names sm">Paul Zamar and Richelle Zamora</p>
+        </div>
+        <div class="group">
+          <p class="sub caps">The Cord</p>
+          <p class="desc">to bind us together in everlasting love and fidelity</p>
+          <p class="names sm">Luke Evangelista and Mara Angoluan</p>
+        </div>
+        <div class="group">
+          <p class="sub caps">The Candle</p>
+          <p class="desc">to light our path as one family and guide us on our journey together</p>
+          <p class="names sm">Rebecca Green</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"><span></span></div>
+
+    <div class="split" style="width:420px">
+      <div class="col"><p class="sub caps">Flower Girls</p><p class="names sm">Elisha and Lois Zamar</p></div>
+      <div class="rule"></div>
+      <div class="col"><p class="sub caps">Ring Bearer</p><p class="names sm">Nathan Zamar</p></div>
+    </div>
+
+    <p class="script attire">Attire: Formal</p>
+
+  </div>
+</section>
+
+</body>
+</html>
